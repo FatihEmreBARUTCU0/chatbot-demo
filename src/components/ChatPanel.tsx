@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import MessageBubble, { type Message } from "@/components/MessageBubble";
 import TypingIndicator from "@/components/TypingIndicator";
 import ChatInput from "@/components/ChatInput";
-import { getBotResponse, type ConversationState } from "@/lib/mockResponses";
 
 const INITIAL_MESSAGE: Message = {
   id: "init",
@@ -20,30 +19,18 @@ const SUGGESTIONS = [
   "İletişim bilgileri",
 ];
 
-const PLACEHOLDER: Record<ConversationState, string> = {
-  idle: "Mesajınızı yazın... (Enter ile gönderin)",
-  awaiting_order_number: "Sipariş numaranızı girin... (Ör: #12345)",
-  awaiting_return_item: "İade etmek istediğiniz ürünü yazın...",
-};
-
-const FLOW_HINT: Partial<Record<ConversationState, { icon: string; text: string }>> = {
-  awaiting_order_number: { icon: "📦", text: "Sipariş numaranızı bekliyorum — ör: #12345" },
-  awaiting_return_item: { icon: "🔄", text: "İade etmek istediğiniz ürünün adını yazın" },
-};
-
 export default function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const [conversationState, setConversationState] = useState<ConversationState>("idle");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const sendMessage = (text: string) => {
+  const sendMessage = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || isTyping) return;
 
@@ -60,27 +47,43 @@ export default function ChatPanel() {
     setInput("");
     setIsTyping(true);
 
-    // Capture state before async delay
-    const currentState = conversationState;
-    const delay = 900 + Math.random() * 600;
+    const delay = 1000 + Math.random() * 1000;
+    await new Promise((resolve) => setTimeout(resolve, delay));
 
-    setTimeout(() => {
-      const { text: responseText, nextState } = getBotResponse(trimmed, currentState);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: trimmed }),
+      });
 
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
+
+      const data = (await response.json()) as { reply?: string };
       const botMsg: Message = {
         id: `bot-${Date.now()}`,
         role: "bot",
-        text: responseText,
+        text: data.reply ?? "Şu anda yanıt üretilemedi. Lütfen tekrar deneyin.",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, botMsg]);
-      setConversationState(nextState);
+    } catch {
+      const fallbackMsg: Message = {
+        id: `bot-${Date.now()}`,
+        role: "bot",
+        text: "Şu anda servisimize ulaşılamıyor. Lütfen kısa süre sonra tekrar deneyin.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, fallbackMsg]);
+    } finally {
       setIsTyping(false);
-    }, delay);
+    }
   };
-
-  const hint = FLOW_HINT[conversationState];
 
   return (
     <div className="flex flex-col h-full bg-white">
@@ -101,14 +104,6 @@ export default function ChatPanel() {
           7/24 Aktif
         </div>
       </div>
-
-      {/* Flow hint banner */}
-      {hint && (
-        <div className="mx-4 mt-3 flex items-center gap-2 text-xs text-violet-700 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 flex-shrink-0">
-          <span>{hint.icon}</span>
-          <span>{hint.text}</span>
-        </div>
-      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
@@ -151,10 +146,10 @@ export default function ChatPanel() {
           onChange={setInput}
           onSend={() => sendMessage(input)}
           disabled={isTyping}
-          placeholder={PLACEHOLDER[conversationState]}
+          placeholder="Mesajınızı yazın... (Enter ile gönderin)"
         />
         <p className="text-center text-[11px] text-zinc-400 pb-2.5">
-          Bu bir demo uygulamasıdır · Gerçek AI entegrasyonu mevcut değildir
+          ShopBot · Groq AI ile güçlendirilmiştir
         </p>
       </div>
     </div>
