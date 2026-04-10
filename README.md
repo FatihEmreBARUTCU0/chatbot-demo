@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💬 ShopBot — AI Customer Service Chatbot
 
-## Getting Started
+An AI-powered customer service chatbot built with Groq AI, designed for e-commerce businesses to handle orders, returns, and customer inquiries 24/7.
 
-First, run the development server:
+## 🔗 Live Demo
+[chatbot-demo-seven-lovat.vercel.app](https://chatbot-demo-seven-lovat.vercel.app)
 
+## 📷 Screenshots
+
+![Hero](hero.png)
+
+
+## ✨ Features
+- Groq AI (Llama 3.3) powered conversational responses
+- Order tracking & return request handling
+- Smart routing to human agents
+- Real-time response (< 2 seconds)
+- 7/24 availability
+
+## 🔒 Security
+- Mozilla Observatory **A+ (120/100)** — 10/10 tests passed
+- Google PageSpeed **100/100**
+- Nonce-based Content Security Policy (CSP)
+- CORS protection
+- Rate limiting
+
+## 🛠️ Tech Stack
+- Next.js 15
+- TypeScript
+- Tailwind CSS
+- Groq AI API
+- Vercel
+
+## 🚀 Getting Started
 ```bash
+git clone https://github.com/FatihEmreBARUTCU0/chatbot-demo
+cd chatbot-demo
+npm install
+# .env.local dosyası oluştur
+# GROQ_API_KEY=your_key_here
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
