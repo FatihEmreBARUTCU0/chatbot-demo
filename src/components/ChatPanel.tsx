@@ -147,7 +147,7 @@ export default function ChatPanel() {
           disabled={isTyping}
           placeholder="Mesajınızı yazın... (Enter ile gönderin)"
         />
-        <p className="text-center text-[11px] text-zinc-400 pb-2.5">
+        <p className="text-center text-[11px] text-zinc-600 pb-2.5">
           ShopBot · Groq AI ile güçlendirilmiştir
         </p>
       </div>
