@@ -33,6 +33,7 @@ export default function ChatInput({ value, onChange, onSend, disabled, placehold
       <Button
         onClick={onSend}
         disabled={disabled || !value.trim()}
+        aria-label="Mesaj gönder"
         size="icon-lg"
         className="rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 hover:from-violet-600 hover:to-indigo-700 text-white border-0 flex-shrink-0 disabled:opacity-40"
       >

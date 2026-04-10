@@ -4,7 +4,7 @@ export type Message = {
   id: string;
   role: "user" | "bot";
   text: string;
-  timestamp: Date;
+  timestamp?: Date;
 };
 
 function formatTime(date: Date): string {
@@ -38,7 +38,9 @@ export default function MessageBubble({ message }: { message: Message }) {
         >
           {message.text}
         </div>
-        <span className="text-[11px] text-zinc-400">{formatTime(message.timestamp)}</span>
+        {message.timestamp && (
+          <span className="text-[11px] text-zinc-400">{formatTime(message.timestamp)}</span>
+        )}
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ const INITIAL_MESSAGE: Message = {
   id: "init",
   role: "bot",
   text: "Merhaba! Ben ShopBot. Sipariş takibi, iade veya başka bir konuda yardımcı olabilirim. Ne yapmak istersiniz?",
-  timestamp: new Date(),
 };
 
 const SUGGESTIONS = [
@@ -97,7 +96,7 @@ export default function ChatPanel() {
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm text-zinc-900">ShopBot Destek</p>
-          <p className="text-xs text-emerald-600 font-medium">● Çevrimiçi — Ortalama yanıt: &lt;2 sn</p>
+          <p className="text-xs text-emerald-800 font-medium">● Çevrimiçi — Ortalama yanıt: &lt;2 sn</p>
         </div>
         <div className="hidden sm:flex items-center gap-1 text-xs text-zinc-400 bg-zinc-50 px-2.5 py-1 rounded-full border border-zinc-200">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
