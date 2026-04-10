@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { connection } from "next/server";
+import { headers } from "next/headers";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -21,17 +23,22 @@ export const metadata: Metadata = {
     "E-ticaret için AI chatbot demo. Sipariş takibi, iade işlemleri ve anlık müşteri desteği.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connection();
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col" data-nonce={nonce}>
+        {children}
+      </body>
     </html>
   );
 }
